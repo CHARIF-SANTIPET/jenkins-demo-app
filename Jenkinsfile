@@ -11,6 +11,11 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/CHARIF-SANTIPET/jenkins-demo-app.git'
             }
         }
+        stage('Whoami'){
+            steps {
+                sh 'docker exec -it jenkins_master whoami'
+            }
+        }
         stage('Build Image') {
             steps {
                 sh 'docker build -t jenkins-demo-app:latest .'
