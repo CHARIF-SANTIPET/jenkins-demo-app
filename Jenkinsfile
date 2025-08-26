@@ -31,7 +31,11 @@ pipeline {
         }
         stage('Run Container') {
             steps {
-                sh 'docker run -d -p 8081:8081 --name demo-app jenkins-demo-app:latest'
+                 withDockerContainer(image: 'jenkins-demo-app:latest', args: '--entrypoint=""') {
+                        sh '''
+                            pytest -v
+                        '''
+                    }
             }
         }
         
