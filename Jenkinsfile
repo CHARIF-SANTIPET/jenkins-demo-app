@@ -15,18 +15,18 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/CHARIF-SANTIPET/jenkins-demo-app.git'
             }
         }
+        stage('Test') {
+            steps {
+                sh 'echo "Running tests..."'
+                sh 'pytest || true'
+            }
+        }
         stage('Build Image') {
             steps {
                 sh '''
                     mkdir -p $DOCKER_CONFIG
                     docker build -t jenkins-demo-app:latest .
                 '''
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'echo "Running tests..."'
-                sh 'pytest || true'
             }
         }
         stage('Run Container') {
