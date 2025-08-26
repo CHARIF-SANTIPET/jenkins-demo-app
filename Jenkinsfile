@@ -1,10 +1,16 @@
 pipeline {
-    withDockerContainer(image: 'docker:20.10.7', args: '--entrypoint=""') {
-        sh 'docker version'
-    }
     environment {
         DOCKER_CONFIG = "${env.WORKSPACE}/.docker"
     }
+    stage('Check Docker CLI') {
+            steps {
+                script {
+                    withDockerContainer(image: 'docker:20.10.7', args: '--entrypoint=""') {
+                        sh 'docker version'
+                    }
+                }
+            }
+        }
     agent {
         docker {
             image 'docker:20.10.7'
