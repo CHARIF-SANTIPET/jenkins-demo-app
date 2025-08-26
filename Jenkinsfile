@@ -1,4 +1,10 @@
 pipeline {
+    withDockerContainer(image: 'docker:20.10.7', args: '--entrypoint=""') {
+        sh 'docker version'
+    }
+    environment {
+        DOCKER_CONFIG = "${env.WORKSPACE}/.docker"
+    }
     agent {
         docker {
             image 'docker:20.10.7'
@@ -13,7 +19,10 @@ pipeline {
         }
         stage('Build Image') {
             steps {
-                sh 'docker build . -t jenkins-demo-app:latest'
+                sh '''
+                    mkdir -p $DOCKER_CONFIG
+                    docker build -t jenkins-demo-app:latest .
+                '''
             }
         }
         stage('Run Container') {
